@@ -1,0 +1,187 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+    <title>JavaScript Calendar</title> 
+    <style> 
+        .calendar { 
+            width: 400px; 
+            margin: 20px auto; 
+            border: 1px solid #333; 
+            border-radius: 10px; 
+            padding: 20px; 
+            background-color: #f9f9f9; 
+        } 
+        .calendar-header { 
+            text-align: center; 
+            margin-bottom: 20px; 
+        } 
+        .calendar-grid { 
+            display: grid; 
+            grid-template-columns: repeat(7, 1fr); 
+            gap: 5px; 
+        } 
+        .day-header { 
+            text-align: center; 
+            font-weight: bold; 
+            padding: 10px; 
+            background-color: #eee; 
+        } 
+        .day { 
+            text-align: center; 
+            padding: 10px; 
+            border: 1px solid #ddd; 
+            cursor: pointer; 
+        } 
+        .day:hover { 
+            background-color: #e0e0e0; 
+        } 
+        .today { 
+            background-color: #ffeb3b; 
+            font-weight: bold; 
+        } 
+        .navigation { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 10px; 
+        } 
+        button { 
+            padding: 5px 10px; 
+            cursor: pointer; 
+        } 
+    </style> 
+</head> 
+<body> 
+    <div class="calendar"> 
+        <div class="navigation"> 
+            <button onclick="changeMonth(-1)">Previous</button> 
+            <button onclick="changeMonth(1)">Next</button> 
+        </div> 
+        <div class="calendar-header"> 
+            <h2 id="month-year">Month Year</h2> 
+        </div> 
+        <div class="calendar-grid" id="calendar-grid"> 
+            <!-- Calendar days will be generated here --> 
+        </div> 
+    </div> 
+ 
+    <script> 
+        // Using concepts FROM YOUR PPT: 
+         
+        // Variables (from PPT section "Variables and Types") 
+        var currentDate = new Date(); // Date object from PPT 
+        var currentMonth = currentDate.getMonth(); // Date method from PPT 
+        var currentYear = currentDate.getFullYear(); // Date method from PPT 
+         
+        // Arrays (from PPT section "JavaScript - Array") 
+        var monthNames = [ 
+            "January", "February", "March", "April", "May", "June", 
+            "July", "August", "September", "October", "November", "December" 
+        ]; 
+         
+        var dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]; 
+         
+        // Function declaration (from PPT section "JavaScript - Function") 
+        function initCalendar() { 
+            updateCalendar(); 
+        } 
+         
+        function updateCalendar() { 
+            // String concatenation (from PPT) 
+            var monthYearString = monthNames[currentMonth] + " " + currentYear; 
+            document.getElementById("month-year").innerHTML = monthYearString; 
+             
+            // Get first day of month and days in month 
+            var firstDay = new Date(currentYear, currentMonth, 1); 
+            var daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); 
+             
+            var calendarGrid = document.getElementById("calendar-grid"); 
+            calendarGrid.innerHTML = ""; 
+             
+            // Create day headers using array and loop (from PPT) 
+            for (var i = 0; i < dayNames.length; i++) { 
+                var dayHeader = document.createElement("div"); 
+                dayHeader.className = "day-header"; 
+                dayHeader.innerHTML = dayNames[i]; // Array access from PPT 
+                calendarGrid.appendChild(dayHeader); 
+            } 
+             
+            // Add empty cells for days before first day of month 
+            for (var i = 0; i < firstDay.getDay(); i++) { 
+                var emptyDay = document.createElement("div"); 
+                emptyDay.className = "day"; 
+                calendarGrid.appendChild(emptyDay); 
+            } 
+             
+            // Create days of the month 
+            for (var day = 1; day <= daysInMonth; day++) { 
+                var dayElement = document.createElement("div"); 
+                dayElement.className = "day"; 
+                dayElement.innerHTML = day.toString(); // Number to String conversion from PPT 
+                 
+                // Check if this is today (using Date methods from PPT) 
+                var today = new Date(); 
+                if (day === today.getDate() &&  
+                    currentMonth === today.getMonth() &&  
+                    currentYear === today.getFullYear()) { 
+                    dayElement.classList.add("today"); 
+                } 
+                 
+                // Add click event (Event-driven programming from PPT) 
+                dayElement.onclick = function() { 
+                    showDayDetails(this.innerHTML); 
+                }; 
+                 
+                calendarGrid.appendChild(dayElement); 
+            } 
+        } 
+         
+        // Function with parameters (from PPT) 
+        function changeMonth(direction) { 
+            currentMonth += direction; 
+             
+            // Handle year boundaries 
+            if (currentMonth > 11) { 
+                currentMonth = 0; 
+                currentYear++; 
+            } else if (currentMonth < 0) { 
+                currentMonth = 11; 
+                currentYear--; 
+            } 
+             
+            updateCalendar(); 
+        } 
+         
+        // Function demonstrating string operations (from PPT) 
+        function showDayDetails(day) { 
+            if (day) { 
+                // String concatenation from PPT 
+                var message = "Selected: " + monthNames[currentMonth] + " " + day + ", " + currentYear; 
+                alert(message); // Using alert from PPT examples 
+            } 
+        } 
+         
+        // Date formatting example (from PPT section "JavaScript - Date Format") 
+        function showCurrentDate() { 
+            var now = new Date(); 
+            // Various date formats from PPT 
+            var formats = { 
+                default: now.toString(), 
+                toDateString: now.toDateString(), 
+                toLocaleDateString: now.toLocaleDateString(), 
+                toISOString: now.toISOString() 
+            }; 
+             
+            console.log("Current date in different formats:"); 
+            for (var format in formats) { 
+                console.log(format + ": " + formats[format]); 
+            } 
+        } 
+         
+        // Initialize calendar when page loads 
+        initCalendar(); 
+         
+        // Demonstrate date formatting 
+        showCurrentDate(); 
+    </script> 
+</body> 
+</html>

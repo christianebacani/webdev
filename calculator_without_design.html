@@ -1,0 +1,86 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+    <title>Simple Calculator</title> 
+</head> 
+<body> 
+    <input type="text" id="display" readonly> 
+    <br> 
+    <button onclick="appendNumber('7')">7</button> 
+    <button onclick="appendNumber('8')">8</button> 
+    <button onclick="appendNumber('9')">9</button> 
+    <button onclick="appendOperator('+')">+</button> 
+    <br> 
+    <button onclick="appendNumber('4')">4</button> 
+    <button onclick="appendNumber('5')">5</button> 
+    <button onclick="appendNumber('6')">6</button> 
+    <button onclick="appendOperator('-')">-</button> 
+    <br> 
+    <button onclick="appendNumber('1')">1</button> 
+    <button onclick="appendNumber('2')">2</button> 
+    <button onclick="appendNumber('3')">3</button> 
+    <button onclick="appendOperator('*')">*</button> 
+    <br> 
+    <button onclick="appendNumber('0')">0</button> 
+    <button onclick="clearDisplay()">C</button> 
+    <button onclick="calculate()">=</button> 
+    <button onclick="appendOperator('/')">/</button> 
+ 
+    <script> 
+        // Using concepts FROM YOUR PPT: 
+         
+        // Variables (from PPT section "Variables and Types") 
+        var currentInput = ''; 
+        var operation = null; 
+        var previousInput = ''; 
+         
+        // Function declaration (from PPT section "JavaScript - Function") 
+        function appendNumber(num) { 
+            currentInput = currentInput + num; // String concatenation 
+            updateDisplay(); 
+        } 
+         
+        function appendOperator(op) { 
+            if (currentInput !== '') { 
+                operation = op; 
+                previousInput = currentInput; 
+                currentInput = ''; 
+            } 
+        } 
+         
+        function calculate() { 
+            var result; 
+            var num1 = parseFloat(previousInput); // Number type 
+            var num2 = parseFloat(currentInput); 
+             
+            // Conditional statements 
+            if (operation === '+') { 
+                result = num1 + num2; 
+            } else if (operation === '-') { 
+                result = num1 - num2; 
+            } else if (operation === '*') { 
+                result = num1 * num2; 
+            } else if (operation === '/') { 
+                result = num1 / num2; 
+            } 
+             
+            currentInput = result.toString(); // Number to String conversion 
+            operation = null; 
+            previousInput = ''; 
+            updateDisplay(); 
+        } 
+         
+        function clearDisplay() { 
+            currentInput = ''; 
+            operation = null; 
+            previousInput = ''; 
+            updateDisplay(); 
+        } 
+         
+        function updateDisplay() { 
+            // DOM manipulation (getElementById) 
+            document.getElementById('display').value = currentInput; 
+        } 
+    </script> 
+</body> 
+</html>
